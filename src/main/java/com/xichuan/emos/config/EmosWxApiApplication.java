@@ -1,10 +1,10 @@
-package com.xichuan.emos;
+package com.xichuan.emos.config;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.context.annotation.ComponentScan;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-//@ServletComponentScan
+@ComponentScan("com.xichuan")
 @EnableSwagger2
 @SpringBootApplication
 public class EmosWxApiApplication {
