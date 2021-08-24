@@ -14,6 +14,6 @@ public class TestController {
     @GetMapping("/sayHello")
     @ApiOperation("sayHello测试方法 http://192.168.1.118:8080/emos-wx-app/test/sayHello")
     public CommonResp sayHello(){
-        return CommonResp.success().put("message","hello world");
+        return CommonResp.success().put("message","hello world 5 ");
     }
 }
