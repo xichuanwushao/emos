@@ -1,7 +1,10 @@
-package com.xichuan.emos.shiro;
+package com.xichuan.emos.filter;
 
 import cn.hutool.core.util.StrUtil;
 import com.auth0.jwt.exceptions.TokenExpiredException;
+import com.xichuan.emos.shiro.JwtUtil;
+import com.xichuan.emos.shiro.OAuth2Token;
+import com.xichuan.emos.shiro.ThreadLocalToken;
 import org.apache.http.HttpStatus;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;

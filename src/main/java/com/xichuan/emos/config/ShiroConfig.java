@@ -1,6 +1,6 @@
 package com.xichuan.emos.config;
 
-import com.xichuan.emos.shiro.OAuth2Filter;
+import com.xichuan.emos.filter.OAuth2Filter;
 import com.xichuan.emos.shiro.OAuth2Realm;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
