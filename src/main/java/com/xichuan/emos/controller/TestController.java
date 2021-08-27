@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 
 @RestController
@@ -35,9 +37,15 @@ public class TestController {
     }
 
     @GetMapping("/registerUser")
-    public CommonResp sayHello3(){
+    @ApiOperation("测试方法")
+    public CommonResp registerUser(){
         userService.getOpenId("20");
         return CommonResp.success().put("message","hello world 5 ");
+    }
+    @GetMapping("/searchUserPermissions")
+    @ApiOperation("测试方法")
+    public CommonResp searchUserPermissions(int id){
+        return CommonResp.success().put("message",userService.searchUserPermissions(id));
     }
 
 

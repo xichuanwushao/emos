@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Set;
 
 @Service
 @Slf4j
@@ -69,5 +70,11 @@ public class UserServiceImpl implements UserService{
 
         }
         return 0;
+    }
+
+    @Override
+    public Set<String> searchUserPermissions(int userId) {
+        Set<String> permissions=tb_userMapperCust.searchUserPermissions(userId);
+        return permissions;
     }
 }
