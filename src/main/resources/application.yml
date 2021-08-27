@@ -7,7 +7,7 @@ server:
     connection-timeout: 5000ms
   port: 8080
   servlet:
-    context-path: /emos-wx-app
+    context-path: /emos
 
 spring:
   datasource:
@@ -70,3 +70,7 @@ emos:
     expire: 5
     #令牌缓存时间(天数)
     cache-expire: 10
+
+wx:
+  app-id: wx539efd2e45d79197
+  app-secret: 8f01228a69352ae0b6f57fb22d734978

@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>emos-wx-api</artifactId>
+    <artifactId>emos</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>emos-wx-api</name>
+    <name>emos</name>
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>1.8</java.version>
