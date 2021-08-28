@@ -15,7 +15,7 @@ public class TokenAspect {
     @Autowired
     private ThreadLocalToken threadLocalToken;
 
-    @Pointcut("execution(public * com.example.emos.wx.controller.*.*(..))")
+    @Pointcut("execution(public * com.xichuan.emos.controller.*.*(..))")
     public void aspect(){
 
     }
