@@ -1,5 +1,6 @@
 package com.xichuan.emos.controller;
 
+import com.xichuan.emos.req.LoginReq;
 import com.xichuan.emos.req.RegisterReq;
 import com.xichuan.emos.resp.CommonResp;
 import com.xichuan.emos.service.UserService;
@@ -45,5 +46,15 @@ public class UserController {
     }
     private void saveCacheToken(String token,int userId){
         redisTemplate.opsForValue().set(token,userId+"",cacheExpire, TimeUnit.DAYS);
+    }
+
+    @PostMapping("/login")
+    @ApiOperation("登陆系统")
+    public CommonResp login(@Valid @RequestBody LoginReq form){
+        int id=userService.login(form.getCode());
+        String token=jwtUtil.createToken(id);
+        saveCacheToken(token,id);
+        Set<String> permsSet = userService.searchUserPermissions(id);
+        return CommonResp.success("登陆成功").put("token",token).put("permission",permsSet);
     }
 }
