@@ -77,4 +77,15 @@ public class UserServiceImpl implements UserService{
         Set<String> permissions=tb_userMapperCust.searchUserPermissions(userId);
         return permissions;
     }
+
+    @Override
+    public Integer login(String code) {
+        String openId=getOpenId(code);
+        Integer id=tb_userMapperCust.searchIdByOpenId(openId);
+        if(id==null){
+            throw new BusinessException("帐户不存在");
+        }
+
+        return id;
+    }
 }
