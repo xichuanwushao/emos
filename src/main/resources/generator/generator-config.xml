@@ -42,6 +42,9 @@
 
         <!--<table tableName="demo" domainObjectName="Demo"/>-->
         <!--<table tableName="tb_user" domainObjectName="TB_User"/>-->
-        <table tableName="sys_config" domainObjectName="SysConfig"/>
+<!--        <table tableName="sys_config" domainObjectName="SysConfig"/>-->
+        <table tableName="tb_checkin" domainObjectName="TbCheckin"/>
+        <table tableName="tb_holidays" domainObjectName="TbHolidays"/>
+        <table tableName="tb_workday" domainObjectName="TbWorkday"/>
      </context>
  </generatorConfiguration>
