@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xichuan.emos.mapper.TB_UserMapper">
-  <resultMap id="BaseResultMap" type="com.xichuan.emos.domain.TB_User">
+  <resultMap id="BaseResultMap" type="com.xichuan.emos.domain.TbUser">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="open_id" jdbcType="VARCHAR" property="openId" />
     <result column="nickname" jdbcType="VARCHAR" property="nickname" />
@@ -16,7 +16,7 @@
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.xichuan.emos.domain.TB_User">
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.xichuan.emos.domain.TbUser">
     <result column="role" jdbcType="LONGVARCHAR" property="role" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -84,7 +84,7 @@
   <sql id="Blob_Column_List">
     `role`
   </sql>
-  <select id="selectByExampleWithBLOBs" parameterType="com.xichuan.emos.domain.TB_UserExample" resultMap="ResultMapWithBLOBs">
+  <select id="selectByExampleWithBLOBs" parameterType="com.xichuan.emos.domain.TbUserExample" resultMap="ResultMapWithBLOBs">
     select
     <if test="distinct">
       distinct
@@ -100,7 +100,7 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByExample" parameterType="com.xichuan.emos.domain.TB_UserExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.xichuan.emos.domain.TbUserExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -126,13 +126,13 @@
     delete from tb_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.xichuan.emos.domain.TB_UserExample">
+  <delete id="deleteByExample" parameterType="com.xichuan.emos.domain.TbUserExample">
     delete from tb_user
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.xichuan.emos.domain.TB_User">
+  <insert id="insert" parameterType="com.xichuan.emos.domain.TbUser">
     insert into tb_user (id, open_id, nickname, 
       photo, `name`, sex, tel, 
       email, hiredate, root, dept_id, 
@@ -144,7 +144,7 @@
       #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{role,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.xichuan.emos.domain.TB_User">
+  <insert id="insertSelective" parameterType="com.xichuan.emos.domain.TbUser">
     insert into tb_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -235,7 +235,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.xichuan.emos.domain.TB_UserExample" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="com.xichuan.emos.domain.TbUserExample" resultType="java.lang.Long">
     select count(*) from tb_user
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -330,7 +330,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xichuan.emos.domain.TB_User">
+  <update id="updateByPrimaryKeySelective" parameterType="com.xichuan.emos.domain.TbUser">
     update tb_user
     <set>
       <if test="openId != null">
@@ -375,7 +375,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xichuan.emos.domain.TB_User">
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xichuan.emos.domain.TbUser">
     update tb_user
     set open_id = #{openId,jdbcType=VARCHAR},
       nickname = #{nickname,jdbcType=VARCHAR},
@@ -392,7 +392,7 @@
       `role` = #{role,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.xichuan.emos.domain.TB_User">
+  <update id="updateByPrimaryKey" parameterType="com.xichuan.emos.domain.TbUser">
     update tb_user
     set open_id = #{openId,jdbcType=VARCHAR},
       nickname = #{nickname,jdbcType=VARCHAR},

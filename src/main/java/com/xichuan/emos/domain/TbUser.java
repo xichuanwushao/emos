@@ -2,7 +2,7 @@ package com.xichuan.emos.domain;
 
 import java.util.Date;
 
-public class TB_User {
+public class TbUser {
     private Integer id;
 
     private String openId;

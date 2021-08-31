@@ -1,36 +1,36 @@
 package com.xichuan.emos.mapper;
 
-import com.xichuan.emos.domain.TB_User;
-import com.xichuan.emos.domain.TB_UserExample;
+import com.xichuan.emos.domain.TbUser;
+import com.xichuan.emos.domain.TbUserExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface TB_UserMapper {
-    long countByExample(TB_UserExample example);
+    long countByExample(TbUserExample example);
 
-    int deleteByExample(TB_UserExample example);
+    int deleteByExample(TbUserExample example);
 
     int deleteByPrimaryKey(Integer id);
 
-    int insert(TB_User record);
+    int insert(TbUser record);
 
-    int insertSelective(TB_User record);
+    int insertSelective(TbUser record);
 
-    List<TB_User> selectByExampleWithBLOBs(TB_UserExample example);
+    List<TbUser> selectByExampleWithBLOBs(TbUserExample example);
 
-    List<TB_User> selectByExample(TB_UserExample example);
+    List<TbUser> selectByExample(TbUserExample example);
 
-    TB_User selectByPrimaryKey(Integer id);
+    TbUser selectByPrimaryKey(Integer id);
 
-    int updateByExampleSelective(@Param("record") TB_User record, @Param("example") TB_UserExample example);
+    int updateByExampleSelective(@Param("record") TbUser record, @Param("example") TbUserExample example);
 
-    int updateByExampleWithBLOBs(@Param("record") TB_User record, @Param("example") TB_UserExample example);
+    int updateByExampleWithBLOBs(@Param("record") TbUser record, @Param("example") TbUserExample example);
 
-    int updateByExample(@Param("record") TB_User record, @Param("example") TB_UserExample example);
+    int updateByExample(@Param("record") TbUser record, @Param("example") TbUserExample example);
 
-    int updateByPrimaryKeySelective(TB_User record);
+    int updateByPrimaryKeySelective(TbUser record);
 
-    int updateByPrimaryKeyWithBLOBs(TB_User record);
+    int updateByPrimaryKeyWithBLOBs(TbUser record);
 
-    int updateByPrimaryKey(TB_User record);
+    int updateByPrimaryKey(TbUser record);
 }
