@@ -1,6 +1,8 @@
 package com.xichuan.emos.service;
 
 
+import com.xichuan.emos.domain.TbUser;
+
 import java.util.Set;
 
 public interface UserService {
@@ -9,4 +11,7 @@ public interface UserService {
     public Set<String> searchUserPermissions(int userId);
 
     public Integer login(String code);
+
+    public TbUser searchById(int userId);
+
 }

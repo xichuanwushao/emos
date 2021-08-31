@@ -3,6 +3,7 @@ package com.xichuan.emos.service;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.xichuan.emos.domain.TbUser;
 import com.xichuan.emos.exception.BusinessException;
 import com.xichuan.emos.mapper.TB_UserMapperCust;
 import lombok.extern.slf4j.Slf4j;
@@ -87,5 +88,13 @@ public class UserServiceImpl implements UserService{
         }
 
         return id;
+    }
+
+
+    @Override
+    public TbUser searchById(int userId) {
+        TbUser user=tb_userMapperCust.searchById(userId);
+
+        return user;
     }
 }

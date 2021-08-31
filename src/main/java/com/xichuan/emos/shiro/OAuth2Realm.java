@@ -1,5 +1,7 @@
 package com.xichuan.emos.shiro;
 
+import com.xichuan.emos.domain.TbUser;
+import com.xichuan.emos.service.UserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -15,6 +17,8 @@ public class OAuth2Realm extends AuthorizingRealm {
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Autowired
+    private UserService userService;
 
     @Override
     public boolean supports(AuthenticationToken token) {
@@ -37,8 +41,17 @@ public class OAuth2Realm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        //TODO 从令牌获取userId 然后检测该账户是否被冻结
-        SimpleAuthenticationInfo info=new SimpleAuthenticationInfo();
+        //获取字符串令牌
+        String accessToken=(String)token.getPrincipal();
+        //获取userId
+        int userId=jwtUtil.getUserId(accessToken);
+        //获取用户信息
+        TbUser user=userService.searchById(userId);
+
+        if(user==null){
+            throw new LockedAccountException("账号已被锁定,请联系管理员");
+        }
+        SimpleAuthenticationInfo info=new SimpleAuthenticationInfo(user,accessToken,getName());
         return info;
     }
 }

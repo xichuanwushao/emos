@@ -1,6 +1,8 @@
 package com.xichuan.emos.mapper;
 
 
+import com.xichuan.emos.domain.TbUser;
+
 import java.util.HashMap;
 import java.util.Set;
 
@@ -13,4 +15,5 @@ public interface TB_UserMapperCust {
 
     public Set<String> searchUserPermissions(int userId);
 
+    public TbUser searchById(int userId);
 }
