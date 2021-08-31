@@ -9,6 +9,8 @@ import com.xichuan.emos.service.UserService;
 import com.xichuan.emos.service.UserServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,6 +50,13 @@ public class TestController {
         return CommonResp.success().put("message",userService.searchUserPermissions(id));
     }
 
+
+    @PostMapping("/addUser")
+    @ApiOperation("添加用户测试用户权限")
+    @RequiresPermissions(value = {"ROOT","USER:ADD"},logical = Logical.OR)
+    public CommonResp addUser(){
+        return CommonResp.success("用户添加成功");
+    }
 
 
 }

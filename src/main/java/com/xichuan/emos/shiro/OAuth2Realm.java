@@ -30,9 +30,11 @@ public class OAuth2Realm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection collection) {
+        TbUser user= (TbUser) collection.getPrimaryPrincipal();
+        int userId=user.getId();
+        Set<String> permsSet=userService.searchUserPermissions(userId);
         SimpleAuthorizationInfo info=new SimpleAuthorizationInfo();
-        //TODO 查询用户权限列表
-        //TODO 把权限列表添加到info对象
+        info.setStringPermissions(permsSet);
         return info;
     }
 
