@@ -9,6 +9,7 @@ import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
 import com.xichuan.emos.config.SystemConstants;
 import com.xichuan.emos.domain.TbCheckin;
+import com.xichuan.emos.domain.TbFaceModel;
 import com.xichuan.emos.exception.BusinessException;
 import com.xichuan.emos.mail.EmailTask;
 import com.xichuan.emos.mapper.*;
@@ -62,11 +63,11 @@ public class CheckinServiceImpl implements CheckinService{
     @Value("${emos.email.hr}")
     private String hrEmail;
 
-    @Resource
     private TB_UserMapperCust userMapperCust;
 
     @Autowired
     private EmailTask emailTask;
+
 
     @Override
     public String validCanCheckIn(int userId, String date) {
@@ -202,6 +203,22 @@ public class CheckinServiceImpl implements CheckinService{
             }
         }
     }
-
+    @Override
+    public void createFaceModel(int userId, String path) {
+        HttpRequest request=HttpUtil.createPost(createFaceModelUrl);
+        request.form("photo",FileUtil.file(path));
+        request.form("code",code);
+        HttpResponse response=request.execute();
+        String body=response.body();
+        if("无法识别出人脸".equals(body)||"照片中存在多张人脸".equals(body)){
+            throw new BusinessException(body);
+        }
+        else{
+            TbFaceModel entity=new TbFaceModel();
+            entity.setUserId(userId);
+            entity.setFaceModel(body);
+            faceModelMapperCust.insert(entity);
+        }
+    }
 }
 
