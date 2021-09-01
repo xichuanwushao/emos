@@ -6,6 +6,7 @@ import com.xichuan.emos.mapper.SysConfigMapperCust;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
@@ -14,6 +15,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.List;
 @EnableAsync
@@ -32,6 +34,9 @@ public class EmosWxApiApplication {
         SpringApplication.run(EmosWxApiApplication.class, args);
     }
 
+    @Value("${emos.image-folder}")
+    private String imageFolder;
+
     @PostConstruct
     public void init(){
         List<SysConfig> list=sysConfigMapperCust.selectAllParam();
@@ -46,6 +51,7 @@ public class EmosWxApiApplication {
                 log.error("执行异常",e);
             }
         });
-
+        //创建文件夹用来存放签到自拍照拍
+        new File(imageFolder).mkdirs();
     }
 }

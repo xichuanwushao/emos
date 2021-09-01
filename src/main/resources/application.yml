@@ -82,6 +82,7 @@ emos:
   email:
     system: 1246846@163.com
     hr: 464686551@163.com
+  image-folder: E:/emos/image
 wx:
   app-id: wx539efd2e45d79197
   app-secret: 8f01228a69352ae0b6f57fb22d734978
