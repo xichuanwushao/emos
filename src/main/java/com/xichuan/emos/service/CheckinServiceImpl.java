@@ -10,6 +10,7 @@ import cn.hutool.http.HttpUtil;
 import com.xichuan.emos.config.SystemConstants;
 import com.xichuan.emos.domain.TbCheckin;
 import com.xichuan.emos.exception.BusinessException;
+import com.xichuan.emos.mail.EmailTask;
 import com.xichuan.emos.mapper.*;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
@@ -19,6 +20,7 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -56,6 +58,15 @@ public class CheckinServiceImpl implements CheckinService{
 
     @Value("${emos.code}")
     private String code;
+
+    @Value("${emos.email.hr}")
+    private String hrEmail;
+
+    @Resource
+    private TB_UserMapperCust userMapperCust;
+
+    @Autowired
+    private EmailTask emailTask;
 
     @Override
     public String validCanCheckIn(int userId, String date) {
@@ -156,6 +167,15 @@ public class CheckinServiceImpl implements CheckinService{
                         if("高风险".equals(result)){
                             risk=3;
                             //TODO 发送告警邮件
+                            HashMap<String,String> map=userMapperCust.searchNameAndDept(userId);
+                            String name = map.get("name");
+                            String deptName = map.get("dept_name");
+                            deptName = deptName != null ? deptName : "";
+                            SimpleMailMessage message=new SimpleMailMessage();
+                            message.setTo(hrEmail);
+                            message.setSubject("员工" + name + "身处高风险疫情地区警告");
+                            message.setText(deptName + "员工" + name + "，" + DateUtil.format(new Date(), "yyyy年MM月dd日") + "处于" + address + "，属于新冠疫情高风险地区，请及时与该员工联系，核实情况！");
+                            emailTask.sendAsync(message);
                         }
                         else if("中风险".equals(result)){
                             risk=2;

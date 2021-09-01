@@ -16,4 +16,6 @@ public interface TB_UserMapperCust {
     public Set<String> searchUserPermissions(int userId);
 
     public TbUser searchById(int userId);
+
+    public HashMap searchNameAndDept(int userId);
 }
