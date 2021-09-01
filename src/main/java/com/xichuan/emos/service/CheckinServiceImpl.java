@@ -3,16 +3,19 @@ package com.xichuan.emos.service;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
 import com.xichuan.emos.config.SystemConstants;
+import com.xichuan.emos.domain.TbCheckin;
 import com.xichuan.emos.exception.BusinessException;
-import com.xichuan.emos.mapper.TbCheckinMapperCust;
-import com.xichuan.emos.mapper.TbFaceModelMapperCust;
-import com.xichuan.emos.mapper.TbHolidaysMapperCust;
-import com.xichuan.emos.mapper.TbWorkdayMapperCust;
+import com.xichuan.emos.mapper.*;
 import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
@@ -41,6 +44,9 @@ public class CheckinServiceImpl implements CheckinService{
 
     @Resource
     private TbFaceModelMapperCust faceModelMapperCust;
+
+    @Resource
+    private TbCityMapperCust cityMapperCust;
 
     @Value("${emos.face.createFaceModelUrl}")
     private String createFaceModelUrl;
@@ -130,7 +136,49 @@ public class CheckinServiceImpl implements CheckinService{
             else if("True".equals(body)){
             //TODO 查询疫情风险等级
             //TODO 保存签到记录
-
+            //查询疫情风险等级
+            int risk=1;
+            String city= (String) param.get("city");
+            String district= (String) param.get("district");
+            String address= (String) param.get("address");
+            String country= (String) param.get("country");
+            String province= (String) param.get("province");
+            if(!StrUtil.isBlank(city)&&!StrUtil.isBlank(district)){
+                String code=cityMapperCust.searchCode(city);
+                try{
+                    String url = "http://m." + code + ".bendibao.com/news/yqdengji/?qu=" + district;
+                    Document document= Jsoup.connect(url).get();
+                    Elements elements=document.getElementsByClass("list-content");
+                    if(elements.size()>0){
+                        Element element=elements.get(0);
+                        String result=element.select("p:last-child").text();
+//                            result="高风险";
+                        if("高风险".equals(result)){
+                            risk=3;
+                            //TODO 发送告警邮件
+                        }
+                        else if("中风险".equals(result)){
+                            risk=2;
+                        }
+                    }
+                }catch (Exception e){
+                    log.error("执行异常",e);
+                    throw new BusinessException("获取风险等级失败");
+                }
+            }
+            //保存签到记录
+            TbCheckin entity=new TbCheckin();
+            entity.setUserId(userId);
+            entity.setAddress(address);
+            entity.setCountry(country);
+            entity.setProvince(province);
+            entity.setCity(city);
+            entity.setDistrict(district);
+            entity.setStatus((byte) status);
+            entity.setRisk(risk);
+            entity.setDate(DateUtil.today());
+            entity.setCreateTime(d1);
+            checkinMapperCust.insert(entity);
             }
         }
     }
