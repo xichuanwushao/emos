@@ -77,4 +77,31 @@ public class CheckinController {
 
         }
     }
+    @PostMapping("/createFaceModel")
+    @ApiOperation("创建人脸模型")
+    public CommonResp createFaceModel(@RequestParam("photo") MultipartFile file,@RequestHeader("token") String token){
+        if(file==null){
+            return CommonResp.error("没有上传文件");
+        }
+        int userId=jwtUtil.getUserId(token);
+        String fileName=file.getOriginalFilename().toLowerCase();
+        if(!fileName.endsWith(".jpg")){
+            return CommonResp.error("必须提交JPG格式图片");
+        }
+        else{
+            String path=imageFolder+"/"+fileName;
+            try{
+                file.transferTo(Paths.get(path));
+                checkinService.createFaceModel(userId,path);
+                return CommonResp.success("人脸建模成功");
+            }catch (IOException e){
+                log.error(e.getMessage(),e);
+                throw new BusinessException("图片保存错误");
+            }
+            finally {
+                FileUtil.del(path);
+            }
+
+        }
+    }
 }
