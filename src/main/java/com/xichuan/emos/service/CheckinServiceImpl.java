@@ -167,7 +167,7 @@ public class CheckinServiceImpl implements CheckinService{
                     if(elements.size()>0){
                         Element element=elements.get(0);
                         String result=element.select("p:last-child").text();
-                        //result="高风险";
+//                        result="高风险";
                         if("高风险".equals(result)){
                             risk=3;
                             //TODO 发送告警邮件

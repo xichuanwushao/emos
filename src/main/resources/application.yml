@@ -49,8 +49,8 @@ spring:
   mail:
     default-encoding: UTF-8
     host: smtp.163.com
-    username: ava******@163.com
-    password: 1******
+    username: avatarwx@163.com
+    password: wx*************
     protocol: smtp
     properties.mail.smtp.auth: true
     properties.mail.smtp.ssl.enable: true
@@ -84,10 +84,10 @@ emos:
     createFaceModelUrl: http://192.168.170.135:3000/create_face_model
     checkinUrl: http://192.168.170.135:3000/checkin
   email:
-    system: ava******@163.com
-    hr: 98******@qq.com
+    system: avatarwx@163.com
+    hr: 982754648@qq.com
   image-folder: E:/emos/image
   code: C4B6A48191DFA7E4
 wx:
-  app-id: 1*******************
-  app-secret: 1************************
+  app-id: wx539efd2e45d79197
+  app-secret: 8***228a69352ae0b6f57fb22d734978
