@@ -51,6 +51,9 @@ public class CheckinServiceImpl implements CheckinService{
     @Resource
     private TbCityMapperCust cityMapperCust;
 
+   @Resource
+    private TB_UserMapperCust userMapperCust;
+
     @Value("${emos.face.createFaceModelUrl}")
     private String createFaceModelUrl;
 
@@ -63,7 +66,7 @@ public class CheckinServiceImpl implements CheckinService{
     @Value("${emos.email.hr}")
     private String hrEmail;
 
-    private TB_UserMapperCust userMapperCust;
+
 
     @Autowired
     private EmailTask emailTask;
@@ -164,7 +167,7 @@ public class CheckinServiceImpl implements CheckinService{
                     if(elements.size()>0){
                         Element element=elements.get(0);
                         String result=element.select("p:last-child").text();
-//                            result="高风险";
+                        //result="高风险";
                         if("高风险".equals(result)){
                             risk=3;
                             //TODO 发送告警邮件
@@ -176,6 +179,7 @@ public class CheckinServiceImpl implements CheckinService{
                             message.setTo(hrEmail);
                             message.setSubject("员工" + name + "身处高风险疫情地区警告");
                             message.setText(deptName + "员工" + name + "，" + DateUtil.format(new Date(), "yyyy年MM月dd日") + "处于" + address + "，属于新冠疫情高风险地区，请及时与该员工联系，核实情况！");
+
                             emailTask.sendAsync(message);
                         }
                         else if("中风险".equals(result)){
