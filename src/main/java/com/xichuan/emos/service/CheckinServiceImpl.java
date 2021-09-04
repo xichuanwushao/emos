@@ -1,5 +1,7 @@
 package com.xichuan.emos.service;
 
+import cn.hutool.core.date.DateField;
+import cn.hutool.core.date.DateRange;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
@@ -25,6 +27,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -223,6 +226,67 @@ public class CheckinServiceImpl implements CheckinService{
             entity.setFaceModel(body);
             faceModelMapperCust.insert(entity);
         }
+    }
+
+    @Override
+    public HashMap searchTodayCheckin(int userId) {
+        HashMap map=checkinMapperCust.searchTodayCheckin(userId);
+        return map;
+    }
+
+    @Override
+    public long searchCheckinDays(int userId) {
+        long days=checkinMapperCust.searchCheckinDays(userId);
+        return days;
+    }
+
+    @Override
+    public ArrayList<HashMap> searchWeekCheckin(HashMap param) {
+        ArrayList<HashMap> checkinList=checkinMapperCust.searchWeekCheckin(param);
+        ArrayList holidaysList=holidaysMapperCust.searchHolidaysInRange(param);
+        ArrayList workdayList=workdayMapperCust.searchWorkdayInRange(param);
+        DateTime startDate=DateUtil.parseDate(param.get("startDate").toString());//获取本周的开始日期
+        DateTime endDate=DateUtil.parseDate(param.get("endDate").toString());//获取本周的结束日期
+        DateRange range=DateUtil.range(startDate,endDate, DateField.DAY_OF_MONTH);//获取本周每一天的日期对象
+        ArrayList<HashMap> list=new ArrayList<>();//查看本周每一天是工作日 还是休息日 工作日需要去判断当天的考勤情况
+        range.forEach(one->{
+            String date=one.toString("yyyy-MM-dd");
+            String type="工作日";
+            if(one.isWeekend()){//先粗浅判断今天是不是周末 来判断是否节假日
+                type="节假日";
+            }
+            if(holidaysList!=null&&holidaysList.contains(date)){//查看节假日是否包含这一天
+                type="节假日";
+            }
+            else if(workdayList!=null&&workdayList.contains(date)){//如果这一天在工作日中存在 那么这一天就是工作日
+                type="工作日";
+            }
+            String status="";//如果周五这一天还没有到 那么周五不能算作是旷工 所以初始值是空字符串
+            if(type.equals("工作日")&&DateUtil.compare(one,DateUtil.date())<=0){//1.如果当天是工作日去查看考勤结果  2.还要判定这一天是不是已经发生了
+                //one代表本周的某一天 date是当前的天 如果小于0代表已经发生了
+                status="缺勤";
+                boolean flag=false;
+                for (HashMap<String,String> map:checkinList){//取出checkin一天记录保存map
+                    if(map.containsValue(date)){//map是否含有当前日期
+                        status=map.get("status");//如果含有当前日期 取出map里面的考勤结果
+                        flag=true;
+                        break;
+                    }
+                }
+                DateTime endTime=DateUtil.parse(DateUtil.today()+" "+constants.attendanceEndTime);//如果当天的考勤没有结束 不能判定为考勤
+                String today=DateUtil.today();//当前日期的字符串
+                if(date.equals(today)&&DateUtil.date().isBefore(endTime)&&flag==false){
+                    status="";
+                }
+            }
+            HashMap map=new HashMap();
+            map.put("date",date);
+            map.put("status",status);
+            map.put("type",type);
+            map.put("day",one.dayOfWeekEnum().toChinese("周"));
+            list.add(map);
+        });
+        return list;
     }
 }
 
