@@ -18,4 +18,6 @@ public interface TB_UserMapperCust {
     public TbUser searchById(int userId);
 
     public HashMap searchNameAndDept(int userId);
+
+    public String searchUserHiredate(int userId);
 }
