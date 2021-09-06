@@ -140,12 +140,6 @@ public class CheckinController {
         return CommonResp.success().put("result",map);
     }
 
-    @GetMapping("/searchUserSummary")
-    @ApiOperation("查询用户摘要信息")
-    public CommonResp searchUserSummary(@RequestHeader("token") String token){
-        int userId=jwtUtil.getUserId(token);
-        HashMap map=userService.searchUserSummary(userId);
-        return CommonResp.success().put("result",map);
-    }
+
 
 }

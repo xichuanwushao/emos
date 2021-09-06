@@ -10,12 +10,10 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -56,5 +54,13 @@ public class UserController {
         saveCacheToken(token,id);
         Set<String> permsSet = userService.searchUserPermissions(id);
         return CommonResp.success("登陆成功").put("token",token).put("permission",permsSet);
+    }
+
+    @GetMapping("/searchUserSummary")
+    @ApiOperation("查询用户摘要信息")
+    public CommonResp searchUserSummary(@RequestHeader("token") String token){
+        int userId=jwtUtil.getUserId(token);
+        HashMap map=userService.searchUserSummary(userId);
+        return CommonResp.success().put("result",map);
     }
 }

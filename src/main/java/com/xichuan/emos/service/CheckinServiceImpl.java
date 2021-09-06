@@ -164,6 +164,9 @@ public class CheckinServiceImpl implements CheckinService{
             if(!StrUtil.isBlank(city)&&!StrUtil.isBlank(district)){
                 String code=cityMapperCust.searchCode(city);
                 try{
+                    if(code==null){code="xa";
+                        log.info("未获取到城市code "+city+" 将默认西安市");
+                    }
                     String url = "http://m." + code + ".bendibao.com/news/yqdengji/?qu=" + district;
                     Document document= Jsoup.connect(url).get();
                     Elements elements=document.getElementsByClass("list-content");
