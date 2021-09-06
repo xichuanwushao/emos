@@ -28,4 +28,11 @@ public interface CheckinService {
      * @return
      */
     public ArrayList<HashMap> searchWeekCheckin(HashMap param);
+
+    /***
+     * 查询用户一个月的考勤数据
+     * @param param
+     * @return
+     */
+    public ArrayList<HashMap> searchMonthCheckin(HashMap param);
 }
