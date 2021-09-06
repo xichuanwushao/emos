@@ -103,4 +103,10 @@ public class UserServiceImpl implements UserService{
         String hiredate=tb_userMapperCust.searchUserHiredate(userId);
         return hiredate;
     }
+
+    @Override
+    public HashMap searchUserSummary(int userId) {
+        HashMap map=tb_userMapperCust.searchUserSummary(userId);
+        return map;
+    }
 }
