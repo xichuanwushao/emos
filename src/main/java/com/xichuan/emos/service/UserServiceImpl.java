@@ -1,12 +1,16 @@
 package com.xichuan.emos.service;
 
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.xichuan.emos.domain.MessageEntity;
 import com.xichuan.emos.domain.TbUser;
 import com.xichuan.emos.exception.BusinessException;
+import com.xichuan.emos.mail.MessageTask;
 import com.xichuan.emos.mapper.TB_UserMapperCust;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -29,6 +33,8 @@ public class UserServiceImpl implements UserService{
     @Resource
     private TB_UserMapperCust tb_userMapperCust;
 
+    @Autowired
+    private MessageTask messageTask;
 
     public String getOpenId(String code){
         String url="https://api.weixin.qq.com/sns/jscode2session";
@@ -61,6 +67,14 @@ public class UserServiceImpl implements UserService{
                 param.put("root", true);
                 tb_userMapperCust.insert(param);
                 int id=tb_userMapperCust.searchIdByOpenId(openId);
+
+                MessageEntity entity=new MessageEntity();
+                entity.setSenderId(0);
+                entity.setSenderName("系统消息");
+                entity.setUuid(IdUtil.simpleUUID());
+                entity.setMsg("欢迎您注册成为超级管理员，请及时更新你的员工个人信息。");
+                entity.setSendTime(new Date());
+                messageTask.sendAsync(id+"",entity);
                 return id;
             }
             else{
