@@ -1,8 +1,10 @@
 package com.xichuan.emos.controller;
 
+import com.xichuan.emos.mail.MessageTask;
 import com.xichuan.emos.req.LoginReq;
 import com.xichuan.emos.req.RegisterReq;
 import com.xichuan.emos.resp.CommonResp;
+import com.xichuan.emos.service.MessageService;
 import com.xichuan.emos.service.UserService;
 import com.xichuan.emos.shiro.JwtUtil;
 import io.swagger.annotations.Api;
@@ -33,6 +35,12 @@ public class UserController {
     @Value("${emos.jwt.cache-expire}")
     private int cacheExpire;
 
+    @Autowired
+    private MessageService messageService;
+
+    @Autowired
+    private MessageTask messageTask;
+
     @PostMapping("/register")
     @ApiOperation("注册用户")
     public CommonResp register(@Valid @RequestBody RegisterReq form){
@@ -62,5 +70,15 @@ public class UserController {
         int userId=jwtUtil.getUserId(token);
         HashMap map=userService.searchUserSummary(userId);
         return CommonResp.success().put("result",map);
+    }
+
+    @GetMapping("/refreshMessage")
+    @ApiOperation("刷新用户消息")
+    public CommonResp refreshMessage(@RequestHeader("token") String token){
+        int userId=jwtUtil.getUserId(token);
+        messageTask.receiveAsync(userId+"");
+        long lastRows=messageService.searchLastCount(userId);
+        long unreadRows=messageService.searchUnreadCount(userId);
+        return CommonResp.success().put("lastRows",lastRows).put("unreadRows",unreadRows);
     }
 }

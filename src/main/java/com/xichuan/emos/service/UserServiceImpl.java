@@ -96,12 +96,12 @@ public class UserServiceImpl implements UserService{
     @Override
     public Integer login(String code) {
         String openId=getOpenId(code);
-        Integer id=tb_userMapperCust.searchIdByOpenId(openId);
-        if(id==null){
+        Integer userId=tb_userMapperCust.searchIdByOpenId(openId);
+        if(userId==null){
             throw new BusinessException("帐户不存在");
         }
-
-        return id;
+        messageTask.receiveAsync(userId+"");
+        return userId;
     }
 
 
