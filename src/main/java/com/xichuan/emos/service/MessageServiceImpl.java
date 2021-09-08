@@ -5,10 +5,11 @@ import com.xichuan.emos.domain.MessageRefEntity;
 import com.xichuan.emos.mapper.MessageDao;
 import com.xichuan.emos.mapper.MessageRefDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
-
+@Service
 public class MessageServiceImpl implements MessageService{
     @Autowired
     private MessageDao messageDao;
