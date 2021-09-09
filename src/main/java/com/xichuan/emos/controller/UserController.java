@@ -72,13 +72,5 @@ public class UserController {
         return CommonResp.success().put("result",map);
     }
 
-    @GetMapping("/refreshMessage")
-    @ApiOperation("刷新用户消息")
-    public CommonResp refreshMessage(@RequestHeader("token") String token){
-        int userId=jwtUtil.getUserId(token);
-        messageTask.receiveAsync(userId+"");
-        long lastRows=messageService.searchLastCount(userId);
-        long unreadRows=messageService.searchUnreadCount(userId);
-        return CommonResp.success().put("lastRows",lastRows).put("unreadRows",unreadRows);
-    }
+
 }

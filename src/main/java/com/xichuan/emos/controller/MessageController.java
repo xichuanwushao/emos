@@ -1,5 +1,6 @@
 package com.xichuan.emos.controller;
 
+import com.xichuan.emos.mail.MessageTask;
 import com.xichuan.emos.req.DeleteMessageRefByIdForm;
 import com.xichuan.emos.req.SearchMessageByIdForm;
 import com.xichuan.emos.req.SearchMessageByPageForm;
@@ -24,10 +25,11 @@ public class MessageController {
     @Autowired
     private JwtUtil jwtUtil;
 
-    @Resource
+    @Autowired
     private MessageService messageService;
 
-
+    @Autowired
+    private MessageTask messageTask;
     @PostMapping("/searchMessageByPage")
     @ApiOperation("获取分页消息列表")
     public CommonResp searchMessageByPage(@Valid @RequestBody SearchMessageByPageForm form, @RequestHeader("token") String token) {
@@ -60,5 +62,13 @@ public class MessageController {
         return CommonResp.success().put("result", rows == 1 ? true : false);
     }
 
-
+    @GetMapping("/refreshMessage")
+    @ApiOperation("刷新用户消息")
+    public CommonResp refreshMessage(@RequestHeader("token") String token){
+        int userId=jwtUtil.getUserId(token);
+        messageTask.receiveAsync(userId+"");
+        long lastRows=messageService.searchLastCount(userId);
+        long unreadRows=messageService.searchUnreadCount(userId);
+        return CommonResp.success().put("lastRows",lastRows).put("unreadRows",unreadRows);
+    }
 }

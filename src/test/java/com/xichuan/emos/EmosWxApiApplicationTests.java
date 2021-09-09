@@ -20,7 +20,7 @@ class EmosWxApiApplicationTests {
     private MessageService messageService;
     @Test
     void contextLoads() {
-        for (int i = 1; i <= 5000000; i++) {
+        for (int i = 1; i <= 10; i++) {
             MessageEntity message = new MessageEntity();
             message.setUuid(IdUtil.simpleUUID());
             message.setSenderId(0);
@@ -31,7 +31,7 @@ class EmosWxApiApplicationTests {
 
             MessageRefEntity ref=new MessageRefEntity();
             ref.setMessageId(id);
-            ref.setReceiverId(11); //接收人ID
+            ref.setReceiverId(10); //接收人ID
             ref.setLastFlag(true);
             ref.setReadFlag(false);
             messageService.insertRef(ref);
